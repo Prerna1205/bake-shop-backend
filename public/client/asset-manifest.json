@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.d0ce6f3d.css",
+    "main.js": "/static/js/main.0396a0e8.js",
+    "static/media/cookies.jpg": "/static/media/cookies.fd6f86c53f9ab7d5b42a.jpg",
+    "static/media/donuts.jpg": "/static/media/donuts.70f67ffc5d9e4c3357bf.jpg",
+    "static/media/cart_icon.jpg": "/static/media/cart_icon.b4321da6352ae7b553ea.jpg",
+    "static/media/pancake.jpg": "/static/media/pancake.f9248882b4d2cdba205e.jpg",
+    "index.html": "/index.html",
+    "main.d0ce6f3d.css.map": "/static/css/main.d0ce6f3d.css.map",
+    "main.0396a0e8.js.map": "/static/js/main.0396a0e8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d0ce6f3d.css",
+    "static/js/main.0396a0e8.js"
+  ]
+}
