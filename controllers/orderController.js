@@ -8,32 +8,29 @@ const sendEmail = require("../utils/sendEmail");
 // Create New Order
 exports.newOrder = asyncErrorHandler(async (req, res, next) => {
   const { shippingInfo, orderItems, paymentInfo, totalPrice } = req.body.order;
-  
- const newOrderItems= orderItems.map((obj)=>{
-    return{
-      name: obj.name,
+  console.log(orderItems);
+  const newOrderItems = orderItems.map((obj) => ({
+    name: obj.name,
     price: obj.price,
     quantity: obj.quantity,
-    image:obj.img,
-    product: obj._id
-    }
-  })
+    image: obj.img,
+    product: obj._id,
+  }));
 
   const orderExist = await Order.findOne({ paymentInfo });
-
+let order;
   if (orderExist) {
     return next(new ErrorHandler("Order Already Placed", 400));
+  } else {
+     order = await Order.create({
+      shippingInfo,
+      orderItems: newOrderItems,
+      paymentInfo,
+      totalPrice,
+      paidAt: Date.now(),
+      user: req.body.user.id,
+    });
   }
-
-  const order = await Order.create({
-    shippingInfo,
-    newOrderItems,
-    paymentInfo,
-    totalPrice,
-    paidAt: Date.now(),
-    user: req.body.user.id,
-  });
-
   // await sendEmail({
   //     email: req.user.email,
   //     templateId: process.env.SENDGRID_ORDER_TEMPLATEID,
@@ -71,8 +68,7 @@ exports.getSingleOrderDetails = asyncErrorHandler(async (req, res, next) => {
 
 // Get Logged In User Orders
 exports.myOrders = asyncErrorHandler(async (req, res, next) => {
- 
-  const user=req.user;
+  const user = req.user;
   const orders = await Order.find({ user: user._id });
   if (!orders) {
     return next(new ErrorHandler("Order Not Found", 404));
