@@ -1,4 +1,4 @@
-import { getAllProducts } from "../../controllers/product";
+import { getAllProducts } from "../../controllers/productController";
 
 export default async (req, res) => {
   try {

@@ -7,7 +7,6 @@ const sign = (obj) =>
       if (error) {
         return reject(error);
       }
-      console.log(token);
       return resolve(token);
     });
   });
@@ -46,6 +45,7 @@ export const signUpUser = async ({ name, email, password }) => {
       name,
       email,
       password,
+      isAdmin:false
     });
 
     const token = await sign({
@@ -54,7 +54,7 @@ export const signUpUser = async ({ name, email, password }) => {
       email: user.email,
     });
     return Promise.resolve({
-      user: { id: user._id, name: user.name, lastLoggedIn: user.lastLoggedIn },
+      user: { id: user._id, name: user.name, lastLoggedIn: user.lastLoggedIn,role:user.isAdmin },
       token,
     });
   } catch (error) {
@@ -75,11 +75,10 @@ export const loginUser = async ({ email, password }) => {
       email: user.email,
     });
     return Promise.resolve({
-      user: { id: user._id, name: user.name, lastLoggedIn: user.lastLoggedIn },
+      user: { id: user._id, name: user.name, lastLoggedIn: user.lastLoggedIn,role:user.isAdmin },
       token,
     });
   } catch (error) {
-    console.log("Invalid Credentials" + { error });
     return Promise.reject({ error });
   }
 };
@@ -87,7 +86,6 @@ export const loginUser = async ({ email, password }) => {
 export const verifyToken = async (token) => {
   try {
     const user = jwt.decode(token);
-
     const findUser = await User.findOne({ email: user.email });
     if (!findUser) {
       return Promise.reject({ error: "Unauthorized" });
@@ -98,3 +96,5 @@ export const verifyToken = async (token) => {
     return Promise.reject({ error: "Unauthorized" });
   }
 };
+
+

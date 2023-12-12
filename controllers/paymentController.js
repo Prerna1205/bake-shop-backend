@@ -1,6 +1,5 @@
 const asyncErrorHandler = require("../utils/asyncErrorHandler.js");
 const mongoose = require("mongoose");
-// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const paytm = require("paytmchecksum");
 const https = require("https");
 const Payment = require("../models/paymentModel");

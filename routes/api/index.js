@@ -8,7 +8,6 @@ import deletePost from "./delete-post";
 import catchAll from "./catch-all";
 import verify from "./verify";
 import uploadFile from "./upload-file";
-
 import  addAddress  from "./addAddress";
 import processPayment from "./paymentRoute";
 const { isAuthenticatedUser }=require('../../middlewares/protectApi');
@@ -19,9 +18,7 @@ router.use(
     allowedOrigins: ["*"],
   })
 );
-
 router.get("/getProducts", getProducts);
-
 router
   .route("/products/:productId?")
   .get(getPost)
