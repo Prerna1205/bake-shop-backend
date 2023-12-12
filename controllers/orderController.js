@@ -3,7 +3,6 @@ const Order = require("../models/orderModel");
 const Product = require("../models/product");
 const ErrorHandler = require("../utils/errorHandler");
 
-const sendEmail = require("../utils/sendEmail");
 
 // Create New Order
 exports.newOrder = asyncErrorHandler(async (req, res, next) => {
@@ -31,18 +30,6 @@ let order;
       user: req.body.user.id,
     });
   }
-  // await sendEmail({
-  //     email: req.user.email,
-  //     templateId: process.env.SENDGRID_ORDER_TEMPLATEID,
-  //     data: {
-  //         name: req.user.name,
-  //         shippingInfo,
-  //         orderItems,
-  //         totalPrice,
-  //         oid: order._id,
-  //     }
-  // });
-
   res.status(201).json({
     success: true,
     order,

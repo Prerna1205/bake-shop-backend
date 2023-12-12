@@ -2,11 +2,11 @@ import Product from "../models/product";
 import ProductDetails  from "../models/product_details";
 const asyncErrorHandler = require("../utils/asyncErrorHandler.js");
 var mongoose = require("mongoose");
-const cloudinary = require('cloudinary');
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET
   });
  
 export const getAllProducts = async() => {
@@ -33,28 +33,33 @@ exports.getAdminProducts = asyncErrorHandler(async (req, res, next) => {
 
 // Create Product ---ADMIN
 exports.createProduct = asyncErrorHandler(async (req, res, next) => {
-console.log(req.body);
-//   let images = [];
-//   if (typeof req.body.images === "string") {
-//       images.push(req.body.images);
-//   } else {
-//       images = req.body.images;
-//   }
 
-//   const imagesLink = [];
+  let images = [];
+  if (typeof req.body.images === "string") {
+      images.push(req.body.images);
+  } else {
+      images = req.body.images;
+  }
 
-//   for (let i = 0; i < images.length; i++) {
-//       const result = await cloudinary.v2.uploader.upload(images[i], {
-//           folder: "products",
-//       });
+  const imagesLink = [];
 
-//       imagesLink.push({
-//           public_id: result.public_id,
-//           url: result.secure_url,
-//       });
-//   }
+  for (let i = 0; i < images.length; i++) {
+    // Upload an image
+   try{ 
+    const result = await cloudinary.uploader.upload(images[i], {
+        folder: "products",
+    });
+    imagesLink.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+    });
+}catch(error){
+    console.error(error);
+}
+    
+  }
 
-  req.body.img = 'https://th.bing.com/th/id/OIP._8goBjYIFn-oKKXR9dwUfAHaLI?w=142&h=214&c=7&r=0&o=5&dpr=1.5&pid=1.7';
+  req.body.img = imagesLink[0].url;
   req.body.user = req.user.id;
 
   const product = await Product.create(req.body);
