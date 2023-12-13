@@ -118,6 +118,8 @@ exports.updateOrder = asyncErrorHandler(async (req, res, next) => {
   });
 });
 
+
+
 async function updateStock(id, quantity) {
   const product = await Product.findById(id);
   product.stock -= quantity;

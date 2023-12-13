@@ -1,6 +1,7 @@
 import { Router } from "express";
 const { isAuthenticatedUser,authorizeRoles }=require('../../middlewares/protectApi');
-const { getAllProducts, getProductDetails, updateProduct, deleteProduct, createProduct, getAdminProducts, getProducts } = require('../../controllers/productController');
+const {  getAllOrders } = require('../../controllers/orderController');
+const {  updateProduct, deleteProduct, createProduct, getAdminProducts,  } = require('../../controllers/productController');
 const router = Router();
 var cors = require("cors");
 router.use(
@@ -9,6 +10,7 @@ router.use(
   })
 );
 router.route('/products').get(isAuthenticatedUser, authorizeRoles("admin"), getAdminProducts);
+router.route('/orders').get(isAuthenticatedUser, authorizeRoles("admin"), getAllOrders);
 router.route('/product/new').post(isAuthenticatedUser, authorizeRoles("admin"), createProduct);
 router.route('/product/:id')
     .put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct)
